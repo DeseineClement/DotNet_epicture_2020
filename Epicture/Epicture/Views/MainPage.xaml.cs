@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Epicture
+namespace Epicture.Views
 {
 	public partial class MainPage : ContentPage
 	{

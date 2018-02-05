@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Xamarin.Forms;
 
 namespace Epicture
@@ -13,7 +12,7 @@ namespace Epicture
 		{
 			InitializeComponent();
 
-			MainPage = new Epicture.MainPage();
+            MainPage = new NavigationPage(new Views.MainPage());
 		}
 
 		protected override void OnStart ()
