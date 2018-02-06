@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicture.UWP", "Epicture\Epicture.UWP\Epicture.UWP.csproj", "{FB20E0D4-AB3B-4253-84BB-6A93ED360CCB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D92C4AA8-94E1-4F68-A067-151BF49E1AF9} = {D92C4AA8-94E1-4F68-A067-151BF49E1AF9}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epicture", "Epicture\Epicture\Epicture.csproj", "{3E570943-4CAB-4EFB-9392-3D55F0D28209}"
 	ProjectSection(ProjectDependencies) = postProject
