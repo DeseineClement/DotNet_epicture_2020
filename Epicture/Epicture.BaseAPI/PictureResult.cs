@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace Epicture.BaseAPI
 {
@@ -10,4 +11,10 @@ namespace Epicture.BaseAPI
         public int Height { get; set; }
         public string Url { get; set; }
     }
+
+    public class PicturesResult
+    {
+        public List<PictureResult> Result { get; set; }
+        public bool Success { get; set; }
+    } 
 }
