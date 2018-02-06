@@ -1,0 +1,26 @@
+﻿<Page
+    x:Class="Epicture.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Epicture"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
+            <StackPanel x:Name="SelectHost">
+                <TextBlock FontWeight="Bold" FontSize="30">On Wich Provider would you like to connect ?</TextBlock>
+                <Button HorizontalAlignment="Stretch" FontSize="20" Content="ImgUr" Click="LogToImgUrOnClicked" VerticalAlignment="Center" Margin="0,10,0,10" Width="410"/>
+                <Button HorizontalAlignment="Stretch"  FontSize="20" Content="Flickr" Width="410"></Button>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel x:Name="ImgUrLogin" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock FontWeight="Bold" FontSize="30" HorizontalAlignment="Stretch">Log in to ImgUr</TextBlock>
+            <TextBox FontSize="20" PlaceholderText="Token" HorizontalAlignment="Stretch" Margin="0,10,0,0"></TextBox>
+            <Button FontSize="20" Content="Log In" Click="ButtonImgurLoginOnClicked" HorizontalAlignment="Stretch" Margin="0,10,0,10"></Button>
+            <Button Content="Get a new Token" Click="GeTokenOnClicked" HorizontalAlignment="Stretch"></Button>
+        </StackPanel>
+    </Grid>
+</Page>
