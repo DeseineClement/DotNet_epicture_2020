@@ -13,5 +13,21 @@ namespace Epicture.Views
 		{
 			InitializeComponent();
 		}
+
+	    private void LogToImgUrOnClicked(object sender, EventArgs e)
+	    {
+	        SelectHost.IsVisible = false;
+	        ImgUrLogin.IsVisible = true;
+	    }
+
+	    private void GeTokenOnClicked(object sender, EventArgs e)
+	    {
+            Device.OpenUri(new Uri("https://api.imgur.com/oauth2/authorize?client_id=f413d0439a121fc&response_type=pin"));
+	    }
+
+	    private void ButtonImgurLoginOnClicked(object sender, EventArgs e)
+	    {
+	        Navigation.PushAsync(new ShowPage());
+	    }
 	}
 }
