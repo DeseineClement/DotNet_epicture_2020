@@ -10,7 +10,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
             <StackPanel x:Name="SelectHost">
-                <TextBlock FontWeight="Bold" FontSize="30">On Wich Provider would you like to connect ?</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="30">On which provider would you like to connect ?</TextBlock>
                 <Button HorizontalAlignment="Stretch" FontSize="20" Content="ImgUr" Click="LogToImgUrOnClicked" VerticalAlignment="Center" Margin="0,10,0,10" Width="410"/>
                 <Button HorizontalAlignment="Stretch"  FontSize="20" Content="Flickr" Width="410"></Button>
             </StackPanel>
@@ -18,9 +18,9 @@
 
         <StackPanel x:Name="ImgUrLogin" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock FontWeight="Bold" FontSize="30" HorizontalAlignment="Stretch">Log in to ImgUr</TextBlock>
-            <TextBox FontSize="20" PlaceholderText="Token" HorizontalAlignment="Stretch" Margin="0,10,0,0"></TextBox>
+            <TextBox x:Name="PinTextBox" FontSize="20" PlaceholderText="PIN Code" HorizontalAlignment="Stretch" Margin="0,10,0,0"></TextBox>
             <Button FontSize="20" Content="Log In" Click="ButtonImgurLoginOnClicked" HorizontalAlignment="Stretch" Margin="0,10,0,10"></Button>
-            <Button Content="Get a new Token" Click="GeTokenOnClicked" HorizontalAlignment="Stretch"></Button>
+            <Button Content="Get a new PIN code" Click="GeTokenOnClicked" HorizontalAlignment="Stretch"></Button>
         </StackPanel>
     </Grid>
 </Page>

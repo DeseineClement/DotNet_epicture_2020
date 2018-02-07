@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Epicture.BaseAPI;
 using Epicture.ImgurAPI.API;
+using Newtonsoft.Json;
 
 namespace Epicture.ImgurAPI
 {
@@ -27,7 +28,7 @@ namespace Epicture.ImgurAPI
                 var response = await client.PostAsync("https://api.imgur.com/oauth2/token", content);
                 string ret = await response.Content.ReadAsStringAsync();
 
-                ImgurAuthenticationResult imgurAuthResult = JSON.Deserialize<ImgurAuthenticationResult>(ret);
+                ImgurAuthenticationResult imgurAuthResult = JsonConvert.DeserializeObject<ImgurAuthenticationResult>(ret);
                 if (imgurAuthResult.account_id != 0)
                 {
                     var imgurClient = new ImgurClient(imgurAuthResult.access_token);

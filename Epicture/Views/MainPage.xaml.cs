@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Epicture.ImgurAPI;
+using Epicture.ImgurAPI.API;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -23,9 +25,16 @@ namespace Epicture.Views
             ImgUrLogin.Visibility = Visibility.Visible;
         }
 
-        private void ButtonImgurLoginOnClicked(object sender, RoutedEventArgs e)
+        private async void ButtonImgurLoginOnClicked(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ShowPage));
+            ImgurAuthenticator authenticator = new ImgurAuthenticator("f413d0439a121fc", "cb4801c6adec9918573c4161c660660cb9e34e02");
+
+            AuthenticationResultBase authenticationResult = await authenticator.Authenticate(PinTextBox.Text);
+
+            if (authenticationResult.Success)
+            {
+                Frame.Navigate(typeof(ShowPage), authenticationResult.APIClient);
+            }
         }
 
         private async void GeTokenOnClicked(object sender, RoutedEventArgs e)

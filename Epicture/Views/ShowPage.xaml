@@ -10,33 +10,32 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                <TextBox PlaceholderText="Search Images"/>
-                <ComboBox SelectedIndex="0">
+                <TextBox x:Name="searchBox" PlaceholderText="Search Images"/>
+                <ComboBox x:Name="sizeBox" SelectedIndex="0">
                     <ComboBoxItem>any size</ComboBoxItem>
                     <ComboBoxItem>small</ComboBoxItem>
                     <ComboBoxItem>med</ComboBoxItem>
                     <ComboBoxItem>big</ComboBoxItem>
-                    <ComboBoxItem>lrg</ComboBoxItem>
-                    <ComboBoxItem>huge</ComboBoxItem>
-                </ComboBox>
-                <ComboBox SelectedIndex="0">
-                    <ComboBoxItem>no sort</ComboBoxItem>
-                    <ComboBoxItem>hot</ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="sortBox" SelectedIndex="0">
+                    <ComboBoxItem>time</ComboBoxItem>
                     <ComboBoxItem>viral</ComboBoxItem>
-                    <ComboBoxItem>top</ComboBoxItem>
+                    <ComboBoxItem>hot</ComboBoxItem>
                 </ComboBox>
-                <ComboBox SelectedIndex="0">
+                <ComboBox x:Name="typeBox" SelectedIndex="0">
                     <ComboBoxItem>any file format</ComboBoxItem>
                     <ComboBoxItem>jpg</ComboBoxItem>
                     <ComboBoxItem>png</ComboBoxItem>
-                </ComboBox>
-                <Button Content="Search"></Button>
+                    <ComboBoxItem>gif</ComboBoxItem>
+                    <ComboBoxItem>anigif</ComboBoxItem>
+            </ComboBox>
+                <Button x:Name="SearchButton" Click="SearchButtonOnClick" Content="Search"></Button>
             </StackPanel>
             <GridView x:Name="GridViewAlbum"  Margin="0,42,0,0" >
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" Margin="2">
-                            <Image Source="https://cdn.local.epitech.eu/userprofil/profilview/flavian.desverne.jpg" Width="260" Height="260" Margin="2">
+                            <Image Source="{Binding Url}" Width="260" Height="260" Margin="2">
                             </Image>
                         </StackPanel>
                     </DataTemplate>

@@ -138,6 +138,12 @@
       <Version>6.0.6</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Epicture.ImgurAPI\Epicture.ImgurAPI.csproj">
+      <Project>{FE8BF120-0B97-400E-BD0F-FCC6141048F2}</Project>
+      <Name>Epicture.ImgurAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4AF07AA7-DAF0-432F-AC61-E87469290A69}</ProjectGuid>
+    <ProjectGuid>{CDA13BD8-DCEB-4E2E-BE3F-3AB722413A95}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Epicture.BaseAPI</RootNamespace>
-    <AssemblyName>Epicture.BaseAPI</AssemblyName>
+    <RootNamespace>Test</RootNamespace>
+    <AssemblyName>Test</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.16299.0</TargetPlatformVersion>
@@ -113,7 +113,7 @@
     <Compile Include="Enums\SORT_TYPE.cs" />
     <Compile Include="PictureResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Epicture.BaseAPI.rd.xml" />
+    <EmbeddedResource Include="Properties\Test.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">

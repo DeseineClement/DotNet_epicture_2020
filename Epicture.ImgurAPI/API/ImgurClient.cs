@@ -6,10 +6,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Epicture.BaseAPI;
-using Epicture.BaseAPI.Enums;
+using Epicture.ImgurAPI.Enums;
 using Epicture.ImgurAPI.API.Models;
 using Epicture.ImgurAPI.API.Responses;
+using Newtonsoft.Json;
 
 namespace Epicture.ImgurAPI.API
 {
@@ -73,22 +73,28 @@ namespace Epicture.ImgurAPI.API
             throw new NotImplementedException();
         }
 
-        public override async Task<PicturesResult> Search(string query, FILE_TYPE fileType = FILE_TYPE.ALL, SORT_TYPE sortType = SORT_TYPE.TIME)
+        public override async Task<PicturesResult> Search(string query, string fileType, string sortType, string size)
         {
             if (String.IsNullOrEmpty(query))
             {
                 throw new Exception("Query param cannot be empty.");
             }
             StringBuilder uri = new StringBuilder("https://api.imgur.com/3/gallery/search");
-            uri.AppendFormat("/{0}?", WebUtility.UrlEncode(sortType.ToString().ToLower()));
+            uri.AppendFormat("/{0}?", WebUtility.UrlEncode(sortType));
             uri.AppendFormat("q_any={0}", WebUtility.UrlEncode(query));
-            if (fileType != FILE_TYPE.ALL)
+            if (!String.Equals(fileType, "any file format"))
             {
-                uri.AppendFormat("&q_type={0}", WebUtility.UrlEncode(fileType.ToString().ToLower()));
+                uri.AppendFormat("&q_type={0}", WebUtility.UrlEncode(fileType));
             }
+
+            if (!String.Equals(size, "any size"))
+            {
+                uri.AppendFormat("&q_size_px={0}", WebUtility.UrlEncode(size));
+            }
+
             string jsonString = await this.Get(uri.ToString());
 
-            GallerySearchResponse response = JSON.Deserialize<GallerySearchResponse>(jsonString);
+            GallerySearchResponse response = JsonConvert.DeserializeObject<GallerySearchResponse>(jsonString);
 
             if (!response.success)
             {
@@ -125,7 +131,7 @@ namespace Epicture.ImgurAPI.API
         {
             string jsonString = await this.Get("https://api.imgur.com/3/gallery/hot/viral/");
 
-            GallerySearchResponse response = JSON.Deserialize<GallerySearchResponse>(jsonString);
+            GallerySearchResponse response = JsonConvert.DeserializeObject<GallerySearchResponse>(jsonString);
 
             if (!response.success)
             {
