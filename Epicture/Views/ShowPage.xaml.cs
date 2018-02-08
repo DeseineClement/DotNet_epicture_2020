@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,6 +20,7 @@ namespace Epicture.Views
     public sealed partial class ShowPage : Page
     {
         private AAPIClient Client;
+        private ObservableCollection<PictureResult> SearchedPictures;
 
         public ShowPage()
         {
@@ -42,7 +44,8 @@ namespace Epicture.Views
             
             if (homePics.Success)
             {
-                GridViewAlbum.ItemsSource = new ObservableCollection<PictureResult>(homePics.Result);
+                SearchedPictures =  new ObservableCollection<PictureResult>(homePics.Result);
+                GridViewAlbum.ItemsSource = SearchedPictures;
             }
         }
 
@@ -60,13 +63,71 @@ namespace Epicture.Views
                 return;
             }
 
-            (GridViewAlbum.ItemsSource as ObservableCollection<PictureResult>).Clear();
+            var images = (GridViewAlbum.ItemsSource as ObservableCollection<PictureResult>);
             PicturesResult searchPics = await Client.Search(search, type, sort, size);
+
+            UpdateGridViewAlbum(searchPics);
+        }
+
+        private void UpdateGridViewAlbum(PicturesResult searchPics)
+        {
+            GridViewAlbum.SelectedItems.OfType<PicturesResult>().ToList().Clear();
+            SearchedPictures.Clear();
 
             if (searchPics.Success)
             {
-                searchPics.Result.ForEach(pic => (GridViewAlbum.ItemsSource as ObservableCollection<PictureResult>).Add(pic));
+                searchPics.Result.ForEach(pic => SearchedPictures.Add(pic));
             }
+        }
+
+        private async void AddFavoriteButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
+            if (selectedItems.Count == 0)
+            {
+                var errorDialog = new MessageDialog("You must chose pictures to add in favorites");
+                await errorDialog.ShowAsync();
+                return;
+            } 
+            //TODO: call api to add to favorites;
+            var dialog = new MessageDialog("Pictures successfully added to favorites");
+            await dialog.ShowAsync();
+        }
+
+        private async void RemoveFavoriteButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
+            if (selectedItems.Count == 0)
+            {
+                var errorDialog = new MessageDialog("You must chose pictures to add in favorites");
+                await errorDialog.ShowAsync();
+                return;
+            }
+            //TODO: call api to add to favorites;
+            var dialog = new MessageDialog("Pictures successfully added to favorites");
+            await dialog.ShowAsync();
+        }
+
+        private async void HomeButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            PicturesResult homePics = await Client.FetchHomeImages();
+            if (homePics.Success)
+            {
+                UpdateGridViewAlbum(homePics);
+                searchPanel.Visibility = Visibility.Visible;
+                addFavoriteButton.Visibility = Visibility.Visible;
+
+                removeFavoriteButton.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void FavoriteButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            //todo get favorite from api
+            searchPanel.Visibility = Visibility.Collapsed;
+            addFavoriteButton.Visibility = Visibility.Collapsed;
+
+            removeFavoriteButton.Visibility = Visibility.Visible;
         }
     }
 }
