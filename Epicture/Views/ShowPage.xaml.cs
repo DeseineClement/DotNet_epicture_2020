@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -102,6 +104,14 @@ namespace Epicture.Views
                 UpdateGridViewAlbum(homePics);
                 searchPanel.Visibility = Visibility.Visible;
                 addFavoriteButton.Visibility = Visibility.Visible;
+
+                removeUserPictureButton.Visibility = Visibility.Collapsed;
+
+                uploadButtonSubmit.Visibility = Visibility.Collapsed;
+                uploadButtonAdd.Visibility = Visibility.Collapsed;
+
+                GridViewAlbum.ItemTemplate = Resources["PictureResultShowTemplate"] as DataTemplate;
+                GridViewAlbum.SelectionMode = ListViewSelectionMode.Multiple;
             }
         }
 
@@ -113,7 +123,100 @@ namespace Epicture.Views
                 UpdateGridViewAlbum(favoritePics);
                 searchPanel.Visibility = Visibility.Collapsed;
                 addFavoriteButton.Visibility = Visibility.Collapsed;
+
+                removeUserPictureButton.Visibility = Visibility.Collapsed;
+
+                uploadButtonSubmit.Visibility = Visibility.Collapsed;
+                uploadButtonAdd.Visibility = Visibility.Collapsed;
+
+                GridViewAlbum.ItemTemplate = Resources["PictureResultShowTemplate"] as DataTemplate;
+                GridViewAlbum.SelectionMode = ListViewSelectionMode.None;
             }
+        }
+
+        private void UserButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            //TODO: fetch user images
+            searchPanel.Visibility = Visibility.Collapsed;
+            addFavoriteButton.Visibility = Visibility.Collapsed;
+
+            removeUserPictureButton.Visibility = Visibility.Visible;
+
+            uploadButtonSubmit.Visibility = Visibility.Collapsed;
+            uploadButtonAdd.Visibility = Visibility.Collapsed;
+
+            GridViewAlbum.ItemTemplate = Resources["PictureResultShowTemplate"] as DataTemplate;
+            GridViewAlbum.SelectionMode = ListViewSelectionMode.Multiple;
+        }
+        private void UploadButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            SearchedPictures.Clear();
+            searchPanel.Visibility = Visibility.Collapsed;
+            addFavoriteButton.Visibility = Visibility.Collapsed;
+
+            removeUserPictureButton.Visibility = Visibility.Collapsed;
+
+            uploadButtonSubmit.Visibility = Visibility.Visible;
+            uploadButtonAdd.Visibility = Visibility.Visible;
+
+            GridViewAlbum.ItemTemplate = Resources["PictureResultEditTemplate"] as DataTemplate;
+            GridViewAlbum.SelectionMode = ListViewSelectionMode.None;
+        }
+
+        private async void RemoveUserPictureButtonOnClick(object sender, RoutedEventArgs e)
+        {
+
+            var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
+            if (selectedItems.Count == 0)
+            {
+                var errorDialog = new MessageDialog("You must chose pictures to delete");
+                await errorDialog.ShowAsync();
+                return;
+            }
+            selectedItems.ForEach(pic =>
+            {
+                //TODO: remove in db
+                SearchedPictures.Remove(pic);
+            });
+        }
+
+        private async void UploadButtonSubmitOnClick(object sender, RoutedEventArgs e)
+        {
+            if (SearchedPictures.Count == 0)
+            {
+                var errorDialog = new MessageDialog("You must add pictures to upload");
+                await errorDialog.ShowAsync();
+                return;
+            }
+
+            //TODo: call client to upload files
+            SearchedPictures.Clear();
+
+            var dialog = new MessageDialog("Your pictures have been uploaded");
+            await dialog.ShowAsync();
+        }
+
+        private async void UploadButtonOnAddClick(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker browser = new FileOpenPicker();
+            browser.FileTypeFilter.Add(".png");
+            browser.FileTypeFilter.Add(".jpg");
+            browser.FileTypeFilter.Add(".jpeg");
+            IReadOnlyList<StorageFile> files = await browser.PickMultipleFilesAsync();
+
+            files.ToList().ForEach(file =>
+            {
+                var localPicture = new LocalPictureResult()
+                {
+                    File = file,
+                    Url = file.Path,
+                    Description = "",
+                    Name = "",
+                    Id = ""
+                };
+
+                SearchedPictures.Add(localPicture);
+            });
         }
     }
 }
