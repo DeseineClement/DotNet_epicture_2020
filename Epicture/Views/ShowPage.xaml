@@ -7,16 +7,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="using:System"
     mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:Key="PictureResultShowTemplate">
+            <StackPanel Orientation="Vertical" Margin="2">
+                <Image Source="{Binding Url}" Width="260" Height="260" Margin="2"></Image>
+                <TextBlock Text="{Binding Name}"></TextBlock>
+                <TextBlock Text="{Binding Description}"></TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="PictureResultEditTemplate">
+            <StackPanel Orientation="Vertical" Margin="2">
+                <Image Source="{Binding Url}" Width="260" Height="260" Margin="2"></Image>
+                <TextBox Text="{Binding Name}" PlaceholderText="Name" Margin="0,0,0,10"></TextBox>
+                <TextBox Text="{Binding Description}" PlaceholderText="Description"></TextBox>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <CommandBar>
             <AppBarButton Icon="Home" Label="Home" x:Name="homeButton" Click="HomeButtonOnClick"></AppBarButton>
             <AppBarButton Icon="Favorite" Label="My Favorites" x:Name="favoriteButton" Click="FavoriteButtonOnClick"></AppBarButton>
             <AppBarButton Icon="Contact" Label="My Pictures" x:Name="userButton" Click="UserButtonOnClick"></AppBarButton>
+            <AppBarButton Icon="Upload" Label="Upload your pictures" x:Name="uploadButton" Click="UploadButtonOnClick"></AppBarButton>
         </CommandBar>
         <Button x:Name="addFavoriteButton" Content="Add to my favorites" HorizontalAlignment="Right" VerticalAlignment="Top" Click="AddFavoriteButtonOnClick" Margin="0,53,0,0"></Button>
         <Button x:Name="removeUserPictureButton" Content="Remove from my pictures" HorizontalAlignment="Right" VerticalAlignment="Top" Click="RemoveUserPictureButtonOnClick" Margin="0,53,0,0" Visibility="Collapsed"></Button>
-
+        <Button x:Name="uploadButtonSubmit" Content="Upload my pictures" HorizontalAlignment="Right" VerticalAlignment="Top" Click="UploadButtonSubmitOnClick" Margin="0,53,0,0" Visibility="Collapsed"></Button>
+        <Button x:Name="uploadButtonAdd" Content="Import my pictures" HorizontalAlignment="Right" VerticalAlignment="Top" Click="UploadButtonOnAddClick"  Margin="0,53,153,0" Visibility="Collapsed"></Button>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" x:Name="searchPanel" Margin="0,53,0,0">
             <TextBox x:Name="searchBox" PlaceholderText="Search Images"/>
             <ComboBox x:Name="sizeBox" SelectedIndex="0">
@@ -39,22 +57,14 @@
             </ComboBox>
             <Button x:Name="SearchButton" Click="SearchButtonOnClick" Content="Search"></Button>
         </StackPanel>
-        <GridView x:Name="GridViewAlbum"  Margin="0,93,0,0" SelectionMode="Multiple">
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" Margin="2">
-                        <Image Source="{Binding Url}" Width="260" Height="260" Margin="2">
-                        </Image>
-                    </StackPanel>
-                </DataTemplate>
-            </GridView.ItemTemplate>
+        <GridView x:Name="GridViewAlbum"  Margin="0,93,0,0" SelectionMode="Multiple" ItemTemplate="{StaticResource PictureResultShowTemplate}">
             <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid ItemHeight="330" ItemWidth="320" Orientation="Horizontal" MaximumRowsOrColumns="6">
-                    </ItemsWrapGrid>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-            <Grid Height="100" Width="100"/>
-        </GridView>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid ItemHeight="370" ItemWidth="320" Orientation="Horizontal" MaximumRowsOrColumns="6">
+                        </ItemsWrapGrid>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <Grid Height="100" Width="100"/>
+            </GridView>
     </Grid>
 </Page>

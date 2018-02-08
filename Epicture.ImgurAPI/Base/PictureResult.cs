@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using Windows.Storage;
 
 namespace Epicture.ImgurAPI
 {
@@ -17,5 +18,10 @@ namespace Epicture.ImgurAPI
     {
         public List<PictureResult> Result { get; set; }
         public bool Success { get; set; }
-    } 
+    }
+
+    public class LocalPictureResult : PictureResult
+    {
+        public StorageFile File { get; set; }
+    }
 }
