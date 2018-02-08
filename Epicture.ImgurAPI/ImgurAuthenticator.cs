@@ -31,7 +31,7 @@ namespace Epicture.ImgurAPI
                 ImgurAuthenticationResult imgurAuthResult = JsonConvert.DeserializeObject<ImgurAuthenticationResult>(ret);
                 if (imgurAuthResult.account_id != 0)
                 {
-                    var imgurClient = new ImgurClient(imgurAuthResult.access_token);
+                    var imgurClient = new ImgurClient(imgurAuthResult.access_token, imgurAuthResult.account_username);
                     return new AuthenticationResultBase()
                     {
                         APIClient = imgurClient,
