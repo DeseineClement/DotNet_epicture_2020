@@ -28,14 +28,7 @@ namespace Epicture.Views
         {
             InitializeComponent();
 
-            var list = new List<string>();
-
-            for (int i = 0; i < 100; i++)
-            {
-                list.Add("");
-            }
-
-            GridViewAlbum.ItemsSource = list;
+            GridViewAlbum.ItemsSource = new ObservableCollection<PicturesResult>();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -102,6 +95,7 @@ namespace Epicture.Views
             if (homePics.Success)
             {
                 UpdateGridViewAlbum(homePics);
+
                 searchPanel.Visibility = Visibility.Visible;
                 addFavoriteButton.Visibility = Visibility.Visible;
 
@@ -121,6 +115,7 @@ namespace Epicture.Views
             if (favoritePics.Success)
             {
                 UpdateGridViewAlbum(favoritePics);
+
                 searchPanel.Visibility = Visibility.Collapsed;
                 addFavoriteButton.Visibility = Visibility.Collapsed;
 
@@ -134,23 +129,30 @@ namespace Epicture.Views
             }
         }
 
-        private void UserButtonOnClick(object sender, RoutedEventArgs e)
+        private async void UserButtonOnClick(object sender, RoutedEventArgs e)
         {
-            //TODO: fetch user images
-            searchPanel.Visibility = Visibility.Collapsed;
-            addFavoriteButton.Visibility = Visibility.Collapsed;
+            PicturesResult userPics = await Client.FetchUserImages();
+            if (userPics.Success)
+            {
+                UpdateGridViewAlbum(userPics);
 
-            removeUserPictureButton.Visibility = Visibility.Visible;
+                searchPanel.Visibility = Visibility.Collapsed;
+                addFavoriteButton.Visibility = Visibility.Collapsed;
 
-            uploadButtonSubmit.Visibility = Visibility.Collapsed;
-            uploadButtonAdd.Visibility = Visibility.Collapsed;
+                removeUserPictureButton.Visibility = Visibility.Visible;
 
-            GridViewAlbum.ItemTemplate = Resources["PictureResultShowTemplate"] as DataTemplate;
-            GridViewAlbum.SelectionMode = ListViewSelectionMode.Multiple;
+                uploadButtonSubmit.Visibility = Visibility.Collapsed;
+                uploadButtonAdd.Visibility = Visibility.Collapsed;
+
+                GridViewAlbum.ItemTemplate = Resources["PictureResultShowTemplate"] as DataTemplate;
+                GridViewAlbum.SelectionMode = ListViewSelectionMode.Multiple;
+            }
+         
         }
         private void UploadButtonOnClick(object sender, RoutedEventArgs e)
         {
             SearchedPictures.Clear();
+
             searchPanel.Visibility = Visibility.Collapsed;
             addFavoriteButton.Visibility = Visibility.Collapsed;
 
@@ -175,7 +177,7 @@ namespace Epicture.Views
             }
             selectedItems.ForEach(pic =>
             {
-                //TODO: remove in db
+                Client.RemoveUserImage(pic);
                 SearchedPictures.Remove(pic);
             });
         }
@@ -189,7 +191,7 @@ namespace Epicture.Views
                 return;
             }
 
-            //TODo: call client to upload files
+            SearchedPictures.OfType<LocalPictureResult>().ToList().ForEach(async pic => await Client.AddUserImage(pic));
             SearchedPictures.Clear();
 
             var dialog = new MessageDialog("Your pictures have been uploaded");

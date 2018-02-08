@@ -9,10 +9,13 @@ using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Web.Http;
 using Epicture.ImgurAPI.Enums;
 using Epicture.ImgurAPI.API.Models;
 using Epicture.ImgurAPI.API.Responses;
 using Newtonsoft.Json;
+using HttpClient = System.Net.Http.HttpClient;
+using HttpResponseMessage = System.Net.Http.HttpResponseMessage;
 
 namespace Epicture.ImgurAPI.API
 {
@@ -45,7 +48,7 @@ namespace Epicture.ImgurAPI.API
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.AccessToken);
-                using (HttpResponseMessage response = await client.GetAsync(url))
+                using (HttpResponseMessage response = await client.GetAsync(new Uri(url)))
                 {
                     using (HttpContent content = response.Content)
                     {
@@ -63,7 +66,7 @@ namespace Epicture.ImgurAPI.API
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.AccessToken);
-                using (HttpResponseMessage response = await client.DeleteAsync(url))
+                using (HttpResponseMessage response = await client.DeleteAsync(new Uri(url)))
                 {
                     using (HttpContent content = response.Content)
                     {
@@ -80,7 +83,7 @@ namespace Epicture.ImgurAPI.API
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.AccessToken);
-                using (HttpResponseMessage response = await client.PostAsync(url, data))
+                using (HttpResponseMessage response = await client.PostAsync(new Uri(url), data))
                 {
                     using (HttpContent content = response.Content)
                     {
@@ -128,6 +131,7 @@ namespace Epicture.ImgurAPI.API
             {
                 return new  PictureResult()
                 {
+                    Name = image.title,
                     Description = image.description,
                     Height = image.height,
                     Width = image.width,
@@ -236,15 +240,17 @@ namespace Epicture.ImgurAPI.API
             return FormatResponseToPictureResult(response);
         }
 
-        public override async Task AddUserImage(StorageFile file, string name, string description)
+        public override async Task AddUserImage(LocalPictureResult picture)
         {
-            Stream stream = await file.OpenStreamForReadAsync();
-            HttpContent httpContent = new StreamContent(stream);
+            Stream stream = await picture.File.OpenStreamForReadAsync();
 
-            MultipartFormDataContent dataContent = new MultipartFormDataContent();
-            dataContent.Add(httpContent, "image", "image");
-            dataContent.Add(httpContent, "name", name);
-            dataContent.Add(httpContent, "description", description);
+            MultipartFormDataContent dataContent = new MultipartFormDataContent
+            {
+                {new StreamContent(stream), "image", picture.File.Name},
+                {new StringContent(picture.Name), "title"},
+                {new StringContent(picture.Description), "description"},
+                {new StringContent(picture.File.Name), "name" }
+            };
             await this.Post("https://api.imgur.com/3/upload", dataContent);
         }
 

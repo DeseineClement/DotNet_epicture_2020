@@ -28,7 +28,7 @@ namespace Epicture.ImgurAPI
         public abstract Task<PicturesResult> FetchFavoriteImages();
 
         public abstract Task<PicturesResult> FetchUserImages();
-        public abstract Task AddUserImage(StorageFile file, string name, string description);
+        public abstract Task AddUserImage(LocalPictureResult picture);
         public abstract Task RemoveUserImage(PictureResult selectedPicture);
     }
 }
