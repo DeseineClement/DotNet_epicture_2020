@@ -102,6 +102,8 @@ namespace Epicture.Views
                 UpdateGridViewAlbum(homePics);
                 searchPanel.Visibility = Visibility.Visible;
                 addFavoriteButton.Visibility = Visibility.Visible;
+
+                removeUserPictureButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -113,7 +115,35 @@ namespace Epicture.Views
                 UpdateGridViewAlbum(favoritePics);
                 searchPanel.Visibility = Visibility.Collapsed;
                 addFavoriteButton.Visibility = Visibility.Collapsed;
+
+                removeUserPictureButton.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void UserButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            //TODO: fetch user images
+            searchPanel.Visibility = Visibility.Collapsed;
+            addFavoriteButton.Visibility = Visibility.Collapsed;
+
+            removeUserPictureButton.Visibility = Visibility.Visible;
+        }
+
+        private async void RemoveUserPictureButtonOnClick(object sender, RoutedEventArgs e)
+        {
+
+            var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
+            if (selectedItems.Count == 0)
+            {
+                var errorDialog = new MessageDialog("You must chose pictures to delete");
+                await errorDialog.ShowAsync();
+                return;
+            }
+            selectedItems.ForEach(pic =>
+            {
+                //TODO: remove in db
+                SearchedPictures.Remove(pic);
+            });
         }
     }
 }

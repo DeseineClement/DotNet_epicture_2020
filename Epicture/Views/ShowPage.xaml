@@ -11,9 +11,11 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <CommandBar>
             <AppBarButton Icon="Home" Label="Home" x:Name="homeButton" Click="HomeButtonOnClick"></AppBarButton>
-            <AppBarButton Icon="Favorite" Label="Favorite" x:Name="favoriteButton" Click="FavoriteButtonOnClick"></AppBarButton>
+            <AppBarButton Icon="Favorite" Label="My Favorites" x:Name="favoriteButton" Click="FavoriteButtonOnClick"></AppBarButton>
+            <AppBarButton Icon="Contact" Label="My Pictures" x:Name="userButton" Click="UserButtonOnClick"></AppBarButton>
         </CommandBar>
         <Button x:Name="addFavoriteButton" Content="Add to my favorites" HorizontalAlignment="Right" VerticalAlignment="Top" Click="AddFavoriteButtonOnClick" Margin="0,53,0,0"></Button>
+        <Button x:Name="removeUserPictureButton" Content="Remove from my pictures" HorizontalAlignment="Right" VerticalAlignment="Top" Click="RemoveUserPictureButtonOnClick" Margin="0,53,0,0" Visibility="Collapsed"></Button>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" x:Name="searchPanel" Margin="0,53,0,0">
             <TextBox x:Name="searchBox" PlaceholderText="Search Images"/>
