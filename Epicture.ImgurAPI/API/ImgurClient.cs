@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -7,6 +8,7 @@ using System.Net.Http.Headers;
 using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Epicture.ImgurAPI.Enums;
 using Epicture.ImgurAPI.API.Models;
 using Epicture.ImgurAPI.API.Responses;
@@ -72,13 +74,13 @@ namespace Epicture.ImgurAPI.API
             return ret;
         }
 
-        protected override async Task<string> Post(string url)
+        protected override async Task<string> Post(string url, HttpContent data)
         {
             string ret;
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.AccessToken);
-                using (HttpResponseMessage response = await client.PostAsync(url, null))
+                using (HttpResponseMessage response = await client.PostAsync(url, data))
                 {
                     using (HttpContent content = response.Content)
                     {
@@ -90,7 +92,7 @@ namespace Epicture.ImgurAPI.API
             return ret;
         }
 
-        private static PicturesResult FormatGalleryResponseToPictureResult(GallerySearchResponse response)
+        private static PicturesResult FormatResponseToPictureResult(GallerySearchResponse response)
         {
             List<PictureResult> picturesResult = response.data.ToList().Select(image =>
             {
@@ -116,6 +118,27 @@ namespace Epicture.ImgurAPI.API
             return new PicturesResult()
             {
                 Result = picturesResult,
+                Success = true
+            };
+        }
+
+        private static PicturesResult FormatResponseToPictureResult(ImageResponse response)
+        {
+            List<PictureResult> picturesResults = response.data.ToList().Select(image =>
+            {
+                return new  PictureResult()
+                {
+                    Description = image.description,
+                    Height = image.height,
+                    Width = image.width,
+                    Id = image.id,
+                    Url = image.link
+                };
+            }).ToList();
+
+            return new PicturesResult()
+            {
+                Result = picturesResults,
                 Success = true
             };
         }
@@ -151,7 +174,7 @@ namespace Epicture.ImgurAPI.API
                 };
             }
 
-            return FormatGalleryResponseToPictureResult(response);
+            return FormatResponseToPictureResult(response);
         }
 
         public override async Task<PicturesResult> FetchHomeImages()
@@ -169,12 +192,12 @@ namespace Epicture.ImgurAPI.API
                 };
             }
 
-            return FormatGalleryResponseToPictureResult(response);
+            return FormatResponseToPictureResult(response);
         }
 
         public override async Task AddImageToFavorite(PictureResult selectedPicture)
         {
-            await this.Post($"https://api.imgur.com/3/image/{selectedPicture.Id}/favorite");
+            await this.Post($"https://api.imgur.com/3/image/{selectedPicture.Id}/favorite", null);
         }
 
         public override async Task<PicturesResult> FetchFavoriteImages()
@@ -192,7 +215,42 @@ namespace Epicture.ImgurAPI.API
                 };
             }
 
-            return FormatGalleryResponseToPictureResult(response);
+            return FormatResponseToPictureResult(response);
+        }
+
+        public override async Task<PicturesResult> FetchUserImages()
+        {
+            string jsonString = await this.Get($"https://api.imgur.com/3/account/{this.UserName}/images/");
+
+            ImageResponse response = JsonConvert.DeserializeObject<ImageResponse>(jsonString);
+
+            if (!response.success)
+            {
+                return new PicturesResult()
+                {
+                    Result = null,
+                    Success = false
+                };
+            }
+
+            return FormatResponseToPictureResult(response);
+        }
+
+        public override async Task AddUserImage(StorageFile file, string name, string description)
+        {
+            Stream stream = await file.OpenStreamForReadAsync();
+            HttpContent httpContent = new StreamContent(stream);
+
+            MultipartFormDataContent dataContent = new MultipartFormDataContent();
+            dataContent.Add(httpContent, "image", "image");
+            dataContent.Add(httpContent, "name", name);
+            dataContent.Add(httpContent, "description", description);
+            await this.Post("https://api.imgur.com/3/upload", dataContent);
+        }
+
+        public override async Task RemoveUserImage(PictureResult selectedPicture)
+        {
+            await this.Delete($"https://api.imgur.com/3/image/{selectedPicture.Id}");
         }
     }
 }
