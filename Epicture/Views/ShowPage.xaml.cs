@@ -89,21 +89,7 @@ namespace Epicture.Views
                 await errorDialog.ShowAsync();
                 return;
             } 
-            //TODO: call api to add to favorites;
-            var dialog = new MessageDialog("Pictures successfully added to favorites");
-            await dialog.ShowAsync();
-        }
-
-        private async void RemoveFavoriteButtonOnClick(object sender, RoutedEventArgs e)
-        {
-            var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
-            if (selectedItems.Count == 0)
-            {
-                var errorDialog = new MessageDialog("You must chose pictures to add in favorites");
-                await errorDialog.ShowAsync();
-                return;
-            }
-            //TODO: call api to add to favorites;
+            selectedItems.ForEach(pic => Client.AddImageToFavorite(pic));
             var dialog = new MessageDialog("Pictures successfully added to favorites");
             await dialog.ShowAsync();
         }
@@ -116,18 +102,18 @@ namespace Epicture.Views
                 UpdateGridViewAlbum(homePics);
                 searchPanel.Visibility = Visibility.Visible;
                 addFavoriteButton.Visibility = Visibility.Visible;
-
-                removeFavoriteButton.Visibility = Visibility.Collapsed;
             }
         }
 
-        private void FavoriteButtonOnClick(object sender, RoutedEventArgs e)
+        private async void FavoriteButtonOnClick(object sender, RoutedEventArgs e)
         {
-            //todo get favorite from api
-            searchPanel.Visibility = Visibility.Collapsed;
-            addFavoriteButton.Visibility = Visibility.Collapsed;
-
-            removeFavoriteButton.Visibility = Visibility.Visible;
+            PicturesResult favoritePics = await Client.FetchFavoriteImages();
+            if (favoritePics.Success)
+            {
+                UpdateGridViewAlbum(favoritePics);
+                searchPanel.Visibility = Visibility.Collapsed;
+                addFavoriteButton.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

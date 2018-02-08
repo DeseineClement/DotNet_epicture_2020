@@ -24,7 +24,6 @@ namespace Epicture.ImgurAPI
         public abstract Task<PicturesResult> FetchHomeImages();
 
         public abstract Task AddImageToFavorite(PictureResult selectedPicture);
-        public abstract Task RemoveImageFromFavorite(PictureResult selectedPicture);
         public abstract Task<PicturesResult> FetchFavoriteImages();
     }
 }

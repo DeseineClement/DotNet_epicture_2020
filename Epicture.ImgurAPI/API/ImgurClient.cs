@@ -177,11 +177,6 @@ namespace Epicture.ImgurAPI.API
             await this.Post($"https://api.imgur.com/3/image/{selectedPicture.Id}/favorite");
         }
 
-        public override async Task RemoveImageFromFavorite(PictureResult selectedPicture)
-        {
-            await this.Delete($"https://api.imgur.com/3/image/{selectedPicture.Id}/favorite");
-        }
-
         public override async Task<PicturesResult> FetchFavoriteImages()
         {
             string jsonString = await this.Get($"https://api.imgur.com/3/account/{this.UserName}/favorites/");
