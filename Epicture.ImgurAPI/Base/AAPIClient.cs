@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Epicture.ImgurAPI
 {
@@ -17,7 +18,7 @@ namespace Epicture.ImgurAPI
         }
 
         protected abstract Task<string> Get(string url);
-        protected abstract Task<string> Post(string url);
+        protected abstract Task<string> Post(string url, HttpContent data);
         protected abstract Task<string> Delete(string url);
 
         public abstract Task<PicturesResult> Search(string query, string file_type, string sort, string size);
@@ -25,5 +26,9 @@ namespace Epicture.ImgurAPI
 
         public abstract Task AddImageToFavorite(PictureResult selectedPicture);
         public abstract Task<PicturesResult> FetchFavoriteImages();
+
+        public abstract Task<PicturesResult> FetchUserImages();
+        public abstract Task AddUserImage(StorageFile file, string name, string description);
+        public abstract Task RemoveUserImage(PictureResult selectedPicture);
     }
 }
