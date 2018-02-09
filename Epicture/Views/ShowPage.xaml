@@ -26,10 +26,10 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <CommandBar>
-            <AppBarButton Icon="Home" Label="Home" x:Name="homeButton" Click="HomeButtonOnClick"></AppBarButton>
-            <AppBarButton Icon="Favorite" Label="My Favorites" x:Name="favoriteButton" Click="FavoriteButtonOnClick"></AppBarButton>
-            <AppBarButton Icon="Contact" Label="My Pictures" x:Name="userButton" Click="UserButtonOnClick"></AppBarButton>
-            <AppBarButton Icon="Upload" Label="Upload your pictures" x:Name="uploadButton" Click="UploadButtonOnClick"></AppBarButton>
+            <AppBarButton Icon="Home" Label="Home" x:Name="homeButton" Click="HomeButtonOnClick" IsEnabled="False"></AppBarButton>
+            <AppBarButton Icon="Favorite" Label="My Favorites" x:Name="favoriteButton" Click="FavoriteButtonOnClick" IsEnabled="False"></AppBarButton>
+            <AppBarButton Icon="Contact" Label="My Pictures" x:Name="userButton" Click="UserButtonOnClick" IsEnabled="False"></AppBarButton>
+            <AppBarButton Icon="Upload" Label="Upload your pictures" x:Name="uploadButton" Click="UploadButtonOnClick" IsEnabled="False"></AppBarButton>
         </CommandBar>
         <Button x:Name="addFavoriteButton" Content="Add to my favorites" HorizontalAlignment="Right" VerticalAlignment="Top" Click="AddFavoriteButtonOnClick" Margin="0,53,0,0"></Button>
         <Button x:Name="removeUserPictureButton" Content="Remove from my pictures" HorizontalAlignment="Right" VerticalAlignment="Top" Click="RemoveUserPictureButtonOnClick" Margin="0,53,0,0" Visibility="Collapsed"></Button>
