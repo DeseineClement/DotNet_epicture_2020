@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.ServiceModel.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Web.Http;
@@ -248,13 +249,14 @@ namespace Epicture.ImgurAPI.API
         {
             Stream stream = await picture.File.OpenStreamForReadAsync();
             
-            MultipartFormDataContent dataContent = new MultipartFormDataContent
-            {
-                {new StreamContent(stream), "image", picture.File.Name},
-                {new StringContent(picture.Name), "title"},
-                {new StringContent(picture.Description), "description"},
-                {new StringContent(picture.File.Name), "name" }
-            };
+            MultipartFormDataContent dataContent = new MultipartFormDataContent();
+
+            dataContent.Add(new StreamContent(stream), "image", picture.File.Name);
+            dataContent.Add(new StringContent(picture.File.Name), "name");
+            if (!String.IsNullOrEmpty(picture.Name) && !String.IsNullOrWhiteSpace(picture.Name))
+                dataContent.Add(new StringContent(picture.Name), "title");
+            if (!String.IsNullOrEmpty(picture.Description) && !String.IsNullOrWhiteSpace(picture.Description))
+                dataContent.Add(new StringContent(picture.Description), "title");
 
             OnFileUploading(picture);
             var ret = await this.Post("https://api.imgur.com/3/upload", dataContent);

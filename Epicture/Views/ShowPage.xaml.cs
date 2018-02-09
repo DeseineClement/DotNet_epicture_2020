@@ -57,7 +57,11 @@ namespace Epicture.Views
             WaitingPictures.Add(new
             {
                 Icon = icon,
-                Message = message.Length <= 20 ? message : message.Substring(0, 17) + "..."
+                Message = String.IsNullOrEmpty(message) 
+                    ? "Untitled" 
+                    : message.Length <= 20 
+                        ? message 
+                        : message.Substring(0, 17) + "..."
             });
             WaitingListView.Visibility = Visibility.Visible;
         }
@@ -67,7 +71,11 @@ namespace Epicture.Views
             WaitingPictures.Remove(new
             {
                 Icon = icon,
-                Message = message.Length <= 20 ? message : message.Substring(0, 17) + "..."
+                Message = String.IsNullOrEmpty(message)
+                    ? "Untitled"
+                    : message.Length <= 20
+                        ? message
+                        : message.Substring(0, 17) + "..."
             });
 
             if (WaitingPictures.Count == 0)
