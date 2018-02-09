@@ -19,10 +19,12 @@ namespace Epicture.ImgurAPI
         public event EventHandler<PictureResult> FavoriteAdding;
         public event EventHandler<PictureResult> FavoriteAdded;
         protected string AccessToken { get; set; }
+        public string UserName { get; set; }
 
-        public AAPIClient(string accessToken)
+        public AAPIClient(string accessToken, string userName)
         {
             this.AccessToken = accessToken;
+            this.UserName = userName;
         }
 
         protected abstract Task<string> Get(string url);
