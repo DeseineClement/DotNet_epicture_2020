@@ -66,7 +66,7 @@
             </GridView.ItemsPanel>
             <Grid Height="100" Width="100"/>
         </GridView>
-        <ListView x:Name="WaitingListView" MaxWidth="400" HorizontalAlignment="Right" VerticalAlignment="Bottom" BorderBrush="Gray" BorderThickness="1" Margin="0,93,1,1">
+        <ListView x:Name="WaitingListView" MaxWidth="400" HorizontalAlignment="Right" VerticalAlignment="Bottom" BorderBrush="Gray" BorderThickness="1" Margin="0,93,1,1" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -76,6 +76,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        </Grid>
-     
+    </Grid>
 </Page>
