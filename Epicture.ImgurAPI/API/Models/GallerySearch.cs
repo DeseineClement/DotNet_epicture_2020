@@ -31,15 +31,18 @@ namespace Epicture.ImgurAPI.API.Models
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int comment_count { get; set; }
         public string topic { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int topic_id { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string section { get; set; }
         public string account_url { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int account_id { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int ups { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int downs { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int points { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int score { get; set; }

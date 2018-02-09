@@ -113,6 +113,7 @@
     <Compile Include="API\Models\GallerySearch.cs" />
     <Compile Include="API\Models\Image.cs" />
     <Compile Include="API\Responses\GallerySearchResponse.cs" />
+    <Compile Include="API\Responses\ImageResponse.cs" />
     <Compile Include="Base\AAPIClient.cs" />
     <Compile Include="Base\AProviderAuthenticator.cs" />
     <Compile Include="Base\AuthenticationResultBase.cs" />
