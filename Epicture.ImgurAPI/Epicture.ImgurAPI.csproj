@@ -114,12 +114,6 @@
     <Compile Include="API\Models\Image.cs" />
     <Compile Include="API\Responses\GallerySearchResponse.cs" />
     <Compile Include="API\Responses\ImageResponse.cs" />
-    <Compile Include="Base\AAPIClient.cs" />
-    <Compile Include="Base\AProviderAuthenticator.cs" />
-    <Compile Include="Base\AuthenticationResultBase.cs" />
-    <Compile Include="Base\Enums\FILE_TYPE.cs" />
-    <Compile Include="Base\Enums\SORT_TYPE.cs" />
-    <Compile Include="Base\PictureResult.cs" />
     <Compile Include="ImgurAuthenticator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Epicture.ImgurAPI.rd.xml" />
@@ -132,7 +126,12 @@
       <Version>10.0.3</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Epicture.BaseAPI\Epicture.BaseAPI.csproj">
+      <Project>{4AF07AA7-DAF0-432F-AC61-E87469290A69}</Project>
+      <Name>Epicture.BaseAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Epicture.BaseAPI;
 using Epicture.ImgurAPI;
 using Epicture.ImgurAPI.API;
 

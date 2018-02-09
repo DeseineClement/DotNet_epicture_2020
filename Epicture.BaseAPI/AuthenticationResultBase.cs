@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Epicture.BaseAPI
+﻿namespace Epicture.BaseAPI
 {
     public class AuthenticationResultBase
     {
