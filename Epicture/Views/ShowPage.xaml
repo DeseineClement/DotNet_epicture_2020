@@ -26,10 +26,10 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <CommandBar>
-            <AppBarButton Icon="Home" Label="Home" x:Name="homeButton" Click="HomeButtonOnClick"></AppBarButton>
-            <AppBarButton Icon="Favorite" Label="My Favorites" x:Name="favoriteButton" Click="FavoriteButtonOnClick"></AppBarButton>
-            <AppBarButton Icon="Contact" Label="My Pictures" x:Name="userButton" Click="UserButtonOnClick"></AppBarButton>
-            <AppBarButton Icon="Upload" Label="Upload your pictures" x:Name="uploadButton" Click="UploadButtonOnClick"></AppBarButton>
+            <AppBarButton Icon="Home" Label="Home" x:Name="homeButton" Click="HomeButtonOnClick" IsEnabled="False"></AppBarButton>
+            <AppBarButton Icon="Favorite" Label="My Favorites" x:Name="favoriteButton" Click="FavoriteButtonOnClick" IsEnabled="False"></AppBarButton>
+            <AppBarButton Icon="Contact" Label="My Pictures" x:Name="userButton" Click="UserButtonOnClick" IsEnabled="False"></AppBarButton>
+            <AppBarButton Icon="Upload" Label="Upload your pictures" x:Name="uploadButton" Click="UploadButtonOnClick" IsEnabled="False"></AppBarButton>
         </CommandBar>
         <Button x:Name="addFavoriteButton" Content="Add to my favorites" HorizontalAlignment="Right" VerticalAlignment="Top" Click="AddFavoriteButtonOnClick" Margin="0,53,0,0"></Button>
         <Button x:Name="removeUserPictureButton" Content="Remove from my pictures" HorizontalAlignment="Right" VerticalAlignment="Top" Click="RemoveUserPictureButtonOnClick" Margin="0,53,0,0" Visibility="Collapsed"></Button>
@@ -59,12 +59,23 @@
         </StackPanel>
         <GridView x:Name="GridViewAlbum"  Margin="0,93,0,0" SelectionMode="Multiple" ItemTemplate="{StaticResource PictureResultShowTemplate}">
             <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid ItemHeight="370" ItemWidth="320" Orientation="Horizontal" MaximumRowsOrColumns="6">
-                        </ItemsWrapGrid>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-                <Grid Height="100" Width="100"/>
-            </GridView>
-    </Grid>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid ItemHeight="370" ItemWidth="320" Orientation="Horizontal" MaximumRowsOrColumns="6">
+                    </ItemsWrapGrid>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <Grid Height="100" Width="100"/>
+        </GridView>
+        <ListView x:Name="WaitingListView" MaxWidth="400" HorizontalAlignment="Right" VerticalAlignment="Bottom" BorderBrush="Gray" BorderThickness="1" Margin="0,93,1,1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="{Binding Icon}"></SymbolIcon>
+                        <TextBlock Text="{Binding Message}" Margin="5,0,0,0"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        </Grid>
+     
 </Page>

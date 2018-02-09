@@ -23,12 +23,55 @@ namespace Epicture.Views
     {
         private AAPIClient Client;
         private ObservableCollection<PictureResult> SearchedPictures;
+        private ObservableCollection<dynamic> WaitingPictures;
 
         public ShowPage()
         {
             InitializeComponent();
 
-            GridViewAlbum.ItemsSource = new ObservableCollection<PicturesResult>();
+            SearchedPictures = new ObservableCollection<PictureResult>();
+            WaitingPictures = new ObservableCollection<dynamic>();
+
+            GridViewAlbum.ItemsSource = SearchedPictures;
+            WaitingListView.ItemsSource = WaitingPictures;
+        }
+
+        private void LockNavigation()
+        {
+            homeButton.IsEnabled = false;
+            userButton.IsEnabled = false;
+            favoriteButton.IsEnabled = false;
+            uploadButton.IsEnabled = false;
+        }
+
+        private void UnlockNavigation()
+        {
+            homeButton.IsEnabled = true;
+            userButton.IsEnabled = true;
+            favoriteButton.IsEnabled = true;
+            uploadButton.IsEnabled = true;
+        }
+
+        private void AddWaitingPicture(Symbol icon, string message)
+        {
+            WaitingPictures.Add(new
+            {
+                Icon = icon,
+                Message = message.Length <= 20 ? message : message.Substring(0, 17) + "..."
+            });
+            WaitingListView.Visibility = Visibility.Visible;
+        }
+
+        private void RemoveWaitingPicture(Symbol icon, string message)
+        {
+            WaitingPictures.Remove(new
+            {
+                Icon = icon,
+                Message = message.Length <= 20 ? message : message.Substring(0, 17) + "..."
+            });
+
+            if (WaitingPictures.Count == 0)
+                WaitingListView.Visibility = Visibility.Collapsed;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -36,12 +79,18 @@ namespace Epicture.Views
            Client = e.Parameter as AAPIClient;
 
            PicturesResult homePics = await Client.FetchHomeImages();
-            
-            if (homePics.Success)
-            {
-                SearchedPictures =  new ObservableCollection<PictureResult>(homePics.Result);
-                GridViewAlbum.ItemsSource = SearchedPictures;
-            }
+
+           UpdateGridViewAlbum(homePics);
+
+           Client.FileUploading += (sender, s) => AddWaitingPicture(Symbol.Upload, s.File.Name);
+           Client.FileUploaded += (sender, s) => RemoveWaitingPicture(Symbol.Upload, s.File.Name);
+
+           Client.UserFileDeleting += (sender, s) => AddWaitingPicture(Symbol.Delete, s.Name);
+           Client.UserFileDeleted += (sender, s) => RemoveWaitingPicture(Symbol.Delete, s.Name);
+
+            Client.FavoriteAdding += (sender, s) => AddWaitingPicture(Symbol.Favorite, s.Name);
+            Client.FavoriteAdded += (sender, s) => RemoveWaitingPicture(Symbol.Favorite, s.Name);
+           UnlockNavigation();
         }
 
         private async void SearchButtonOnClick(object sender, RoutedEventArgs e)
@@ -58,10 +107,11 @@ namespace Epicture.Views
                 return;
             }
 
-            var images = (GridViewAlbum.ItemsSource as ObservableCollection<PictureResult>);
+            LockNavigation();
             PicturesResult searchPics = await Client.Search(search, type, sort, size);
-
+         
             UpdateGridViewAlbum(searchPics);
+            UnlockNavigation();
         }
 
         private void UpdateGridViewAlbum(PicturesResult searchPics)
@@ -70,23 +120,15 @@ namespace Epicture.Views
             SearchedPictures.Clear();
 
             if (searchPics.Success)
-            {
                 searchPics.Result.ForEach(pic => SearchedPictures.Add(pic));
-            }
         }
 
-        private async void AddFavoriteButtonOnClick(object sender, RoutedEventArgs e)
+        private void AddFavoriteButtonOnClick(object sender, RoutedEventArgs e)
         {
             var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
             if (selectedItems.Count == 0)
-            {
-                var errorDialog = new MessageDialog("You must chose pictures to add in favorites");
-                await errorDialog.ShowAsync();
                 return;
-            } 
             selectedItems.ForEach(pic => Client.AddImageToFavorite(pic));
-            var dialog = new MessageDialog("Pictures successfully added to favorites");
-            await dialog.ShowAsync();
         }
 
         private async void HomeButtonOnClick(object sender, RoutedEventArgs e)
@@ -111,6 +153,7 @@ namespace Epicture.Views
 
         private async void FavoriteButtonOnClick(object sender, RoutedEventArgs e)
         {
+            LockNavigation();
             PicturesResult favoritePics = await Client.FetchFavoriteImages();
             if (favoritePics.Success)
             {
@@ -127,10 +170,12 @@ namespace Epicture.Views
                 GridViewAlbum.ItemTemplate = Resources["PictureResultShowTemplate"] as DataTemplate;
                 GridViewAlbum.SelectionMode = ListViewSelectionMode.None;
             }
+            UnlockNavigation();
         }
 
         private async void UserButtonOnClick(object sender, RoutedEventArgs e)
         {
+            LockNavigation();
             PicturesResult userPics = await Client.FetchUserImages();
             if (userPics.Success)
             {
@@ -147,10 +192,11 @@ namespace Epicture.Views
                 GridViewAlbum.ItemTemplate = Resources["PictureResultShowTemplate"] as DataTemplate;
                 GridViewAlbum.SelectionMode = ListViewSelectionMode.Multiple;
             }
-         
+            UnlockNavigation();
         }
         private void UploadButtonOnClick(object sender, RoutedEventArgs e)
         {
+            LockNavigation();
             SearchedPictures.Clear();
 
             searchPanel.Visibility = Visibility.Collapsed;
@@ -163,43 +209,40 @@ namespace Epicture.Views
 
             GridViewAlbum.ItemTemplate = Resources["PictureResultEditTemplate"] as DataTemplate;
             GridViewAlbum.SelectionMode = ListViewSelectionMode.None;
+            UnlockNavigation();
         }
 
-        private async void RemoveUserPictureButtonOnClick(object sender, RoutedEventArgs e)
+        private void RemoveUserPictureButtonOnClick(object sender, RoutedEventArgs e)
         {
 
             var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
             if (selectedItems.Count == 0)
-            {
-                var errorDialog = new MessageDialog("You must chose pictures to delete");
-                await errorDialog.ShowAsync();
                 return;
-            }
-            selectedItems.ForEach(pic =>
+
+            LockNavigation();
+            selectedItems.ForEach(async pic =>
             {
-                Client.RemoveUserImage(pic);
+                await Client.RemoveUserImage(pic);
                 SearchedPictures.Remove(pic);
             });
+            UnlockNavigation();
         }
 
-        private async void UploadButtonSubmitOnClick(object sender, RoutedEventArgs e)
+        private void UploadButtonSubmitOnClick(object sender, RoutedEventArgs e)
         {
             if (SearchedPictures.Count == 0)
-            {
-                var errorDialog = new MessageDialog("You must add pictures to upload");
-                await errorDialog.ShowAsync();
                 return;
-            }
+
+            LockNavigation();
 
             SearchedPictures.OfType<LocalPictureResult>().ToList().ForEach(async pic => await Client.AddUserImage(pic));
             SearchedPictures.Clear();
-
-            var dialog = new MessageDialog("Your pictures have been uploaded");
-            await dialog.ShowAsync();
+            UnlockNavigation();
         }
 
         private async void UploadButtonOnAddClick(object sender, RoutedEventArgs e)
         {
+            LockNavigation();
             FileOpenPicker browser = new FileOpenPicker();
             browser.FileTypeFilter.Add(".png");
             browser.FileTypeFilter.Add(".jpg");
@@ -219,6 +262,7 @@ namespace Epicture.Views
 
                 SearchedPictures.Add(localPicture);
             });
+            UnlockNavigation();
         }
     }
 }
