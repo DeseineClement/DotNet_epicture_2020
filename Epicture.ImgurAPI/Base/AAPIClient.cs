@@ -10,6 +10,8 @@ namespace Epicture.ImgurAPI
 {
     public abstract class AAPIClient
     {
+        public event EventHandler<LocalPictureResult> FileUploading;
+        public event EventHandler<LocalPictureResult> FileUploaded; 
         protected string AccessToken { get; set; }
 
         public AAPIClient(string accessToken)
@@ -24,11 +26,21 @@ namespace Epicture.ImgurAPI
         public abstract Task<PicturesResult> Search(string query, string file_type, string sort, string size);
         public abstract Task<PicturesResult> FetchHomeImages();
 
-        public abstract Task AddImageToFavorite(PictureResult selectedPicture);
+        public abstract Task<string> AddImageToFavorite(PictureResult selectedPicture);
         public abstract Task<PicturesResult> FetchFavoriteImages();
 
         public abstract Task<PicturesResult> FetchUserImages();
-        public abstract Task AddUserImage(LocalPictureResult picture);
-        public abstract Task RemoveUserImage(PictureResult selectedPicture);
+        public abstract Task<string> AddUserImage(LocalPictureResult picture);
+        public abstract Task<string> RemoveUserImage(PictureResult selectedPicture);
+
+        protected virtual void OnFileUploading(LocalPictureResult e)
+        {
+            FileUploading?.Invoke(this, e);
+        }
+
+        protected virtual void OnFileUploaded(LocalPictureResult e)
+        {
+            FileUploaded?.Invoke(this, e);
+        }
     }
 }

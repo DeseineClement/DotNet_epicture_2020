@@ -23,12 +23,19 @@ namespace Epicture.Views
     {
         private AAPIClient Client;
         private ObservableCollection<PictureResult> SearchedPictures;
+        private ObservableCollection<dynamic> WaitingPictures;
 
         public ShowPage()
         {
             InitializeComponent();
 
-            GridViewAlbum.ItemsSource = new ObservableCollection<PicturesResult>();
+            SearchedPictures = new ObservableCollection<PictureResult>();
+            WaitingPictures = new ObservableCollection<dynamic>();
+
+            GridViewAlbum.ItemsSource = SearchedPictures;
+            WaitingListView.ItemsSource = WaitingPictures;
+        }
+
         private void LockNavigation()
         {
             homeButton.IsEnabled = false;
@@ -45,6 +52,28 @@ namespace Epicture.Views
             uploadButton.IsEnabled = true;
         }
 
+        private void AddWaitingPicture(Symbol icon, string message)
+        {
+            WaitingPictures.Add(new
+            {
+                Icon = icon,
+                Message = message.Length <= 20 ? message : message.Substring(0, 17) + "..."
+            });
+            WaitingListView.Visibility = Visibility.Visible;
+        }
+
+        private void RemoveWaitingPicture(Symbol icon, string message)
+        {
+            WaitingPictures.Remove(new
+            {
+                Icon = icon,
+                Message = message.Length <= 20 ? message : message.Substring(0, 17) + "..."
+            });
+
+            if (WaitingPictures.Count == 0)
+                WaitingListView.Visibility = Visibility.Collapsed;
+        }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
            Client = e.Parameter as AAPIClient;
@@ -52,6 +81,10 @@ namespace Epicture.Views
            PicturesResult homePics = await Client.FetchHomeImages();
 
            UpdateGridViewAlbum(homePics);
+
+            Client.FileUploading += (sender, s) => AddWaitingPicture(Symbol.Upload, s.File.Name);
+           Client.FileUploaded += (sender, s) => RemoveWaitingPicture(Symbol.Upload, s.File.Name);
+
            UnlockNavigation();
         }
 
@@ -215,7 +248,6 @@ namespace Epicture.Views
 
             SearchedPictures.OfType<LocalPictureResult>().ToList().ForEach(async pic => await Client.AddUserImage(pic));
             SearchedPictures.Clear();
-
             UnlockNavigation();
         }
 

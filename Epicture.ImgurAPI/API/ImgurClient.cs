@@ -199,9 +199,9 @@ namespace Epicture.ImgurAPI.API
             return FormatResponseToPictureResult(response);
         }
 
-        public override async Task AddImageToFavorite(PictureResult selectedPicture)
+        public override async Task<string> AddImageToFavorite(PictureResult selectedPicture)
         {
-            await this.Post($"https://api.imgur.com/3/image/{selectedPicture.Id}/favorite", null);
+            return await this.Post($"https://api.imgur.com/3/image/{selectedPicture.Id}/favorite", null);
         }
 
         public override async Task<PicturesResult> FetchFavoriteImages()
@@ -240,10 +240,10 @@ namespace Epicture.ImgurAPI.API
             return FormatResponseToPictureResult(response);
         }
 
-        public override async Task AddUserImage(LocalPictureResult picture)
+        public override async Task<string> AddUserImage(LocalPictureResult picture)
         {
             Stream stream = await picture.File.OpenStreamForReadAsync();
-
+            
             MultipartFormDataContent dataContent = new MultipartFormDataContent
             {
                 {new StreamContent(stream), "image", picture.File.Name},
@@ -251,12 +251,17 @@ namespace Epicture.ImgurAPI.API
                 {new StringContent(picture.Description), "description"},
                 {new StringContent(picture.File.Name), "name" }
             };
-            await this.Post("https://api.imgur.com/3/upload", dataContent);
+
+            OnFileUploading(picture);
+            var ret = await this.Post("https://api.imgur.com/3/upload", dataContent);
+            OnFileUploaded(picture);
+
+            return ret;
         }
 
-        public override async Task RemoveUserImage(PictureResult selectedPicture)
+        public override async Task<string> RemoveUserImage(PictureResult selectedPicture)
         {
-            await this.Delete($"https://api.imgur.com/3/image/{selectedPicture.Id}");
+            return await this.Delete($"https://api.imgur.com/3/image/{selectedPicture.Id}");
         }
     }
 }
