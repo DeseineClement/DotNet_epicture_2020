@@ -84,21 +84,21 @@ namespace Epicture.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-           Client = e.Parameter as AAPIClient;
+            Client = e.Parameter as AAPIClient;
+            ShowCommandBar.Content = "Welcome " + Client.UserName + "!";
 
-           PicturesResult homePics = await Client.FetchHomeImages();
+            PicturesResult homePics = await Client.FetchHomeImages();
 
-           UpdateGridViewAlbum(homePics);
+            UpdateGridViewAlbum(homePics);
+            Client.FileUploading += (sender, s) => AddWaitingPicture(Symbol.Upload, s.File.Name);
+            Client.FileUploaded += (sender, s) => RemoveWaitingPicture(Symbol.Upload, s.File.Name);
 
-           Client.FileUploading += (sender, s) => AddWaitingPicture(Symbol.Upload, s.File.Name);
-           Client.FileUploaded += (sender, s) => RemoveWaitingPicture(Symbol.Upload, s.File.Name);
-
-           Client.UserFileDeleting += (sender, s) => AddWaitingPicture(Symbol.Delete, s.Name);
-           Client.UserFileDeleted += (sender, s) => RemoveWaitingPicture(Symbol.Delete, s.Name);
+            Client.UserFileDeleting += (sender, s) => AddWaitingPicture(Symbol.Delete, s.Name);
+            Client.UserFileDeleted += (sender, s) => RemoveWaitingPicture(Symbol.Delete, s.Name);
 
             Client.FavoriteAdding += (sender, s) => AddWaitingPicture(Symbol.Favorite, s.Name);
             Client.FavoriteAdded += (sender, s) => RemoveWaitingPicture(Symbol.Favorite, s.Name);
-           UnlockNavigation();
+            UnlockNavigation();
         }
 
         private async void SearchButtonOnClick(object sender, RoutedEventArgs e)

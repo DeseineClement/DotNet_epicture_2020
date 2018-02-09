@@ -22,8 +22,6 @@ namespace Epicture.ImgurAPI.API
 {
     public class ImgurClient : AAPIClient
     {
-        protected string UserName { get; set; }
-
         private static Dictionary<FILE_TYPE, string> fileTypes = new Dictionary<FILE_TYPE, string>()
         {
             {FILE_TYPE.JPG, "jpg"},
@@ -38,9 +36,8 @@ namespace Epicture.ImgurAPI.API
             {SORT_TYPE.VIRAL, "viral"}
         };
 
-        public ImgurClient(string accessToken, string userName) : base(accessToken)
+        public ImgurClient(string accessToken, string userName) : base(accessToken, userName)
         {
-            UserName = userName;
         }
 
         protected override async Task<string> Get(string url)

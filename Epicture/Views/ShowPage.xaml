@@ -25,7 +25,7 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <CommandBar>
+        <CommandBar x:Name="ShowCommandBar" FontSize="30" FontWeight="Bold">
             <AppBarButton Icon="Home" Label="Home" x:Name="homeButton" Click="HomeButtonOnClick" IsEnabled="False"></AppBarButton>
             <AppBarButton Icon="Favorite" Label="My Favorites" x:Name="favoriteButton" Click="FavoriteButtonOnClick" IsEnabled="False"></AppBarButton>
             <AppBarButton Icon="Contact" Label="My Pictures" x:Name="userButton" Click="UserButtonOnClick" IsEnabled="False"></AppBarButton>
