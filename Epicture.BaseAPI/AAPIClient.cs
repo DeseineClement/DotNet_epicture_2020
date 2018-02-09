@@ -1,12 +1,8 @@
-﻿using Epicture.ImgurAPI.Enums;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Storage;
 
-namespace Epicture.ImgurAPI
+namespace Epicture.BaseAPI
 {
     public abstract class AAPIClient
     {
@@ -21,7 +17,7 @@ namespace Epicture.ImgurAPI
         protected string AccessToken { get; set; }
         public string UserName { get; set; }
 
-        public AAPIClient(string accessToken, string userName)
+        protected AAPIClient(string accessToken, string userName)
         {
             this.AccessToken = accessToken;
             this.UserName = userName;

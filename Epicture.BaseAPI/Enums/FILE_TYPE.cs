@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Epicture.ImgurAPI.Enums
+namespace Epicture.BaseAPI.Enums
 {
     public enum FILE_TYPE
     {

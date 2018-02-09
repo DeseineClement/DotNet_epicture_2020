@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Epicture.ImgurAPI.Enums
+﻿namespace Epicture.BaseAPI.Enums
 {
     public enum SORT_TYPE
     {

@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Globalization;
 using Windows.Storage;
 
-namespace Epicture.ImgurAPI
+namespace Epicture.BaseAPI
 {
     public class PictureResult
     {
