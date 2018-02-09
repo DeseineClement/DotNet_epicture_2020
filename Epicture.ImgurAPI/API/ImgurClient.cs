@@ -261,7 +261,11 @@ namespace Epicture.ImgurAPI.API
 
         public override async Task<string> RemoveUserImage(PictureResult selectedPicture)
         {
-            return await this.Delete($"https://api.imgur.com/3/image/{selectedPicture.Id}");
+            OnUserFileDeleting(selectedPicture);
+            var ret =  await this.Delete($"https://api.imgur.com/3/image/{selectedPicture.Id}");
+            OnUserFileDeleted(selectedPicture);
+
+            return ret;
         }
     }
 }

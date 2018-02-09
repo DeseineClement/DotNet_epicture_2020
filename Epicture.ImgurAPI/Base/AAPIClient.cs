@@ -11,7 +11,10 @@ namespace Epicture.ImgurAPI
     public abstract class AAPIClient
     {
         public event EventHandler<LocalPictureResult> FileUploading;
-        public event EventHandler<LocalPictureResult> FileUploaded; 
+        public event EventHandler<LocalPictureResult> FileUploaded;
+
+        public event EventHandler<PictureResult> UserFileDeleting;
+        public event EventHandler<PictureResult> UserFileDeleted; 
         protected string AccessToken { get; set; }
 
         public AAPIClient(string accessToken)
@@ -41,6 +44,16 @@ namespace Epicture.ImgurAPI
         protected virtual void OnFileUploaded(LocalPictureResult e)
         {
             FileUploaded?.Invoke(this, e);
+        }
+
+        protected virtual void OnUserFileDeleting(PictureResult e)
+        {
+            UserFileDeleting?.Invoke(this, e);
+        }
+
+        protected virtual void OnUserFileDeleted(PictureResult e)
+        {
+            UserFileDeleted?.Invoke(this, e);
         }
     }
 }

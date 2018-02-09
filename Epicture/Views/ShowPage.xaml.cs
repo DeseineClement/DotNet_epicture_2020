@@ -82,9 +82,11 @@ namespace Epicture.Views
 
            UpdateGridViewAlbum(homePics);
 
-            Client.FileUploading += (sender, s) => AddWaitingPicture(Symbol.Upload, s.File.Name);
+           Client.FileUploading += (sender, s) => AddWaitingPicture(Symbol.Upload, s.File.Name);
            Client.FileUploaded += (sender, s) => RemoveWaitingPicture(Symbol.Upload, s.File.Name);
 
+           Client.UserFileDeleting += (sender, s) => AddWaitingPicture(Symbol.Delete, s.Name);
+            Client.UserFileDeleted += (sender, s) => RemoveWaitingPicture(Symbol.Delete, s.Name);
            UnlockNavigation();
         }
 
