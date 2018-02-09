@@ -201,7 +201,11 @@ namespace Epicture.ImgurAPI.API
 
         public override async Task<string> AddImageToFavorite(PictureResult selectedPicture)
         {
-            return await this.Post($"https://api.imgur.com/3/image/{selectedPicture.Id}/favorite", null);
+            OnFavoriteAdding(selectedPicture);
+            var ret = await this.Post($"https://api.imgur.com/3/image/{selectedPicture.Id}/favorite", null);
+            OnFavoriteAdded(selectedPicture);
+
+            return ret;
         }
 
         public override async Task<PicturesResult> FetchFavoriteImages()

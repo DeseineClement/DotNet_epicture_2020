@@ -86,7 +86,10 @@ namespace Epicture.Views
            Client.FileUploaded += (sender, s) => RemoveWaitingPicture(Symbol.Upload, s.File.Name);
 
            Client.UserFileDeleting += (sender, s) => AddWaitingPicture(Symbol.Delete, s.Name);
-            Client.UserFileDeleted += (sender, s) => RemoveWaitingPicture(Symbol.Delete, s.Name);
+           Client.UserFileDeleted += (sender, s) => RemoveWaitingPicture(Symbol.Delete, s.Name);
+
+            Client.FavoriteAdding += (sender, s) => AddWaitingPicture(Symbol.Favorite, s.Name);
+            Client.FavoriteAdded += (sender, s) => RemoveWaitingPicture(Symbol.Favorite, s.Name);
            UnlockNavigation();
         }
 
@@ -117,23 +120,15 @@ namespace Epicture.Views
             SearchedPictures.Clear();
 
             if (searchPics.Success)
-            {
                 searchPics.Result.ForEach(pic => SearchedPictures.Add(pic));
-            }
         }
 
-        private async void AddFavoriteButtonOnClick(object sender, RoutedEventArgs e)
+        private void AddFavoriteButtonOnClick(object sender, RoutedEventArgs e)
         {
             var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
             if (selectedItems.Count == 0)
-            {
-                var errorDialog = new MessageDialog("You must chose pictures to add in favorites");
-                await errorDialog.ShowAsync();
                 return;
-            } 
             selectedItems.ForEach(pic => Client.AddImageToFavorite(pic));
-            var dialog = new MessageDialog("Pictures successfully added to favorites");
-            await dialog.ShowAsync();
         }
 
         private async void HomeButtonOnClick(object sender, RoutedEventArgs e)
@@ -217,16 +212,12 @@ namespace Epicture.Views
             UnlockNavigation();
         }
 
-        private async void RemoveUserPictureButtonOnClick(object sender, RoutedEventArgs e)
+        private void RemoveUserPictureButtonOnClick(object sender, RoutedEventArgs e)
         {
 
             var selectedItems = GridViewAlbum.SelectedItems.OfType<PictureResult>().ToList();
             if (selectedItems.Count == 0)
-            {
-                var errorDialog = new MessageDialog("You must chose pictures to delete");
-                await errorDialog.ShowAsync();
                 return;
-            }
 
             LockNavigation();
             selectedItems.ForEach(async pic =>
@@ -237,14 +228,10 @@ namespace Epicture.Views
             UnlockNavigation();
         }
 
-        private async void UploadButtonSubmitOnClick(object sender, RoutedEventArgs e)
+        private void UploadButtonSubmitOnClick(object sender, RoutedEventArgs e)
         {
             if (SearchedPictures.Count == 0)
-            {
-                var errorDialog = new MessageDialog("You must add pictures to upload");
-                await errorDialog.ShowAsync();
                 return;
-            }
 
             LockNavigation();
 
