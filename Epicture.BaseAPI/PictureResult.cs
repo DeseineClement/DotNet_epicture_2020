@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Globalization;
 using Windows.Storage;
 
-namespace Epicture.BaseAPI
+namespace Epicture.ImgurAPI
 {
     public class PictureResult
     {
@@ -11,6 +13,9 @@ namespace Epicture.BaseAPI
         public int Width { get; set; }
         public int Height { get; set; }
         public string Url { get; set; }
+        public string Id { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     public class PicturesResult
@@ -23,5 +28,4 @@ namespace Epicture.BaseAPI
     {
         public StorageFile File { get; set; }
     }
-
 }

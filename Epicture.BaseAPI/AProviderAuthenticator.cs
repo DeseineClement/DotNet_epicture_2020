@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Epicture.ImgurAPI;
 
 namespace Epicture.BaseAPI
 {
