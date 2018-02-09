@@ -85,7 +85,7 @@ namespace Epicture.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             Client = e.Parameter as AAPIClient;
-            ShowCommandBar.Content = "Welcome " + Client.UserName + "!";
+            ShowCommandBar.Content = "Welcome " + Client.UserName + " !";
 
             PicturesResult homePics = await Client.FetchHomeImages();
 
