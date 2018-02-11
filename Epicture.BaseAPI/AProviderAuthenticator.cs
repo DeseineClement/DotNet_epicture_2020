@@ -11,8 +11,8 @@ namespace Epicture.BaseAPI
             ClientSecret = clientSecret;
         }
 
-        protected string ClientId { get;  }
-        protected string ClientSecret { get; }
+        public string ClientId { get;  }
+        public string ClientSecret { get; }
 
         //Return the token and the client
         public abstract Task<AuthenticationResultBase> Authenticate(string pinCode);
