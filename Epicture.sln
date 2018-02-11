@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicture.FlickrAPI", "Epict
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicture.ImgurAPI", "Epicture.ImgurAPI\Epicture.ImgurAPI.csproj", "{FE8BF120-0B97-400E-BD0F-FCC6141048F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epicture.Test.BaseAPI", "Epicture.Test.BaseAPI\Epicture.Test.BaseAPI.csproj", "{74A67176-1716-4DFB-9651-075EC2509863}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,26 @@ Global
 		{FE8BF120-0B97-400E-BD0F-FCC6141048F2}.Release|x64.Build.0 = Release|x64
 		{FE8BF120-0B97-400E-BD0F-FCC6141048F2}.Release|x86.ActiveCfg = Release|x86
 		{FE8BF120-0B97-400E-BD0F-FCC6141048F2}.Release|x86.Build.0 = Release|x86
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|ARM.ActiveCfg = Debug|ARM
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|ARM.Build.0 = Debug|ARM
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|ARM.Deploy.0 = Debug|ARM
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|x64.ActiveCfg = Debug|x64
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|x64.Build.0 = Debug|x64
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|x64.Deploy.0 = Debug|x64
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|x86.ActiveCfg = Debug|x86
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|x86.Build.0 = Debug|x86
+		{74A67176-1716-4DFB-9651-075EC2509863}.Debug|x86.Deploy.0 = Debug|x86
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|Any CPU.ActiveCfg = Release|x86
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|ARM.ActiveCfg = Release|ARM
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|ARM.Build.0 = Release|ARM
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|ARM.Deploy.0 = Release|ARM
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|x64.ActiveCfg = Release|x64
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|x64.Build.0 = Release|x64
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|x64.Deploy.0 = Release|x64
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|x86.ActiveCfg = Release|x86
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|x86.Build.0 = Release|x86
+		{74A67176-1716-4DFB-9651-075EC2509863}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
