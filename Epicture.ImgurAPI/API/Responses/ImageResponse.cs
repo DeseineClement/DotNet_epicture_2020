@@ -7,7 +7,7 @@ using Epicture.ImgurAPI.API.Models;
 
 namespace Epicture.ImgurAPI.API.Responses
 {
-    class ImageResponse
+    public class ImageResponse
     {
         public List<Image> data;
         public bool success;
