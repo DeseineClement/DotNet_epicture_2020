@@ -254,7 +254,7 @@ namespace Epicture.ImgurAPI.API
             if (!String.IsNullOrEmpty(picture.Name) && !String.IsNullOrWhiteSpace(picture.Name))
                 dataContent.Add(new StringContent(picture.Name), "title");
             if (!String.IsNullOrEmpty(picture.Description) && !String.IsNullOrWhiteSpace(picture.Description))
-                dataContent.Add(new StringContent(picture.Description), "title");
+                dataContent.Add(new StringContent(picture.Description), "description");
 
             OnFileUploading(picture);
             var ret = await this.Post("https://api.imgur.com/3/upload", dataContent);
